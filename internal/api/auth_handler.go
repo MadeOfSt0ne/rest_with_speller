@@ -12,10 +12,10 @@ import (
 )
 
 type AuthHandler struct {
-	authSrv auth.AuthSrv
+	authSrv auth.AuthService
 }
 
-func NewAuthHandler(authSrv auth.AuthSrv) *AuthHandler {
+func NewAuthHandler(authSrv auth.AuthService) *AuthHandler {
 	return &AuthHandler{authSrv: authSrv}
 }
 
@@ -23,6 +23,7 @@ func (h *AuthHandler) RegisterAuth(r *chi.Mux) {
 	r.Post("/login", h.singIn)
 }
 
+// Логин в приложении. Принимает в теле запроса login и password. Возвращает jwt токен
 func (h *AuthHandler) singIn(w http.ResponseWriter, req *http.Request) {
 	logrus.Info("singing in")
 	var loginInfo types.LoginInfo

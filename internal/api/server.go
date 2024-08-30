@@ -31,5 +31,6 @@ func (s *APIServer) Run() {
 	authHandler := NewAuthHandler(authService)
 	authHandler.RegisterAuth(r)
 
-	http.ListenAndServe(s.addr, r)
+	err := http.ListenAndServe(s.addr, r)
+	logrus.Fatal(err)
 }

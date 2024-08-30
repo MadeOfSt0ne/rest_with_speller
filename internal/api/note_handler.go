@@ -17,15 +17,17 @@ func NewNoteHandler(srv service.NoteService) *Handler {
 }
 
 func (h *Handler) RegisterRoutes(r *chi.Mux) {
-	r.Group(func(r chi.Router) {
-
-		r.Get("/list", h.handleGetList)
-		r.Post("/add", h.handleAddNote)
+	r.Route("/api", func(router chi.Router) {
+		router.Use(validateToken)
+		router.Get("/list", h.handleGetList)
+		router.Post("/add", h.handleAddNote)
 	})
 }
 
 func (h *Handler) handleAddNote(w http.ResponseWriter, req *http.Request) {
 	logrus.Info("Handling add note")
+	userId := req.Context().Value(AuthenticatedUserId).(int)
+	logrus.Info("UserId from middleware:", userId)
 	answer := "add note successful"
 	w.WriteHeader(http.StatusCreated)
 	w.Write([]byte(answer))
