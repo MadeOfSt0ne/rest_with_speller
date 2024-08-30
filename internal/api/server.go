@@ -3,6 +3,7 @@ package api
 import (
 	"net/http"
 	"note/internal/auth"
+	"note/internal/db"
 	"note/internal/service"
 
 	"github.com/go-chi/chi/v5"
@@ -23,7 +24,8 @@ func (s *APIServer) Run() {
 	logrus.Info("Running server")
 	r := chi.NewRouter()
 
-	noteService := service.NewNoteService()
+	noteStore := db.NewNoteRepository()
+	noteService := service.NewNoteService(noteStore)
 	noteHandler := NewNoteHandler(noteService)
 	noteHandler.RegisterRoutes(r)
 

@@ -21,7 +21,7 @@ const AuthenticatedUserId contextKey = 0
 func verifyToken(tokenString string) (int, error) {
 	logrus.Info("verifying token: ", tokenString)
 	token, err := jwt.Parse(tokenString, func(t *jwt.Token) (interface{}, error) {
-		return []byte(secret), nil
+		return secret, nil
 	})
 	if err != nil {
 		logrus.Info("err while parsing token: ", err)
