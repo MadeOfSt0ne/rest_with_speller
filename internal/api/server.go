@@ -1,9 +1,11 @@
 package api
 
 import (
+	"database/sql"
 	"net/http"
 	"note/internal/auth"
 	"note/internal/db"
+
 	"note/internal/service"
 
 	"github.com/go-chi/chi/v5"
@@ -12,11 +14,13 @@ import (
 
 type APIServer struct {
 	addr string
+	db   *sql.DB
 }
 
-func NewAPIServer(addr string) *APIServer {
+func NewAPIServer(addr string, db *sql.DB) *APIServer {
 	return &APIServer{
 		addr: addr,
+		db:   db,
 	}
 }
 
@@ -24,7 +28,7 @@ func (s *APIServer) Run() {
 	logrus.Info("Running server")
 	r := chi.NewRouter()
 
-	noteStore := db.NewNoteRepository()
+	noteStore := db.NewNoteRepository(s.db)
 	noteService := service.NewNoteService(noteStore)
 	noteHandler := NewNoteHandler(noteService)
 	noteHandler.RegisterRoutes(r)
