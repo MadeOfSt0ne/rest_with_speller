@@ -39,7 +39,7 @@ func (h *AuthHandler) singIn(w http.ResponseWriter, req *http.Request) {
 	token, err := h.authSrv.GenerateToken(user)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("oops somethingg went wrong"))
+		w.Write([]byte("oops something went wrong"))
 		return
 	}
 	w.WriteHeader(http.StatusOK)

@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"note/internal/auth"
 	"note/internal/db"
-
 	"note/internal/service"
 
 	"github.com/go-chi/chi/v5"
@@ -25,7 +24,7 @@ func NewAPIServer(addr string, db *sql.DB) *APIServer {
 }
 
 func (s *APIServer) Run() {
-	logrus.Info("Running server")
+	logrus.Info("Running server on port: ", s.addr)
 	r := chi.NewRouter()
 
 	noteStore := db.NewNoteRepository(s.db)

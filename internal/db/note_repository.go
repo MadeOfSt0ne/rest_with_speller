@@ -45,7 +45,7 @@ func (n NoteRepository) AddNewNote(userId int, note types.NoteDto) (types.Note, 
 // Получение списка заметок пользователя
 func (n NoteRepository) GetAllNotes(userId int) ([]types.Note, error) {
 	logrus.Info("getting note for user: ", userId)
-	var noteList []types.Note
+	noteList := []types.Note{}
 	rows, err := n.db.Query("SELECT id, author_id, title, text FROM notes WHERE author_id = :user_id ORDER BY id",
 		sql.Named("user_id", userId))
 	if err != nil {

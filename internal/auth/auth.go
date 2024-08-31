@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"note/internal/types"
+	"os"
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/sirupsen/logrus"
@@ -18,7 +19,7 @@ func NewAuthService() AuthService {
 }
 
 var (
-	secret = []byte("KodeEducation")
+	secret = []byte(os.Getenv("SECRET"))
 )
 
 // Поиск пользователя в базе по логину и проверка пароля

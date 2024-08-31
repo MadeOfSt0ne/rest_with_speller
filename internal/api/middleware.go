@@ -4,13 +4,14 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/sirupsen/logrus"
 )
 
 var (
-	secret = []byte("KodeEducation")
+	secret = []byte(os.Getenv("SECRET"))
 )
 
 type contextKey int

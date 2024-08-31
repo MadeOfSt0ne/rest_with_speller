@@ -39,7 +39,7 @@ func ConnectDB() *sql.DB {
 		CREATE INDEX author_idx ON notes (author_id);
 		`
 
-	if !install {
+	if install {
 		logrus.Info("Creating db with script `create`")
 		if _, err := db.Exec(create); err != nil {
 			logrus.Error("failed to create db: ", err)
