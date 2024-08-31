@@ -23,7 +23,6 @@ var (
 
 // Поиск пользователя в базе по логину и проверка пароля
 func (s *AuthService) GetUserByLoginAndPassword(login, password string) (types.User, error) {
-	logrus.Info("looking for user")
 	logrus.Infof("Getting user by unique login: %s", login)
 
 	users := map[string]types.User{
@@ -43,12 +42,13 @@ func (s *AuthService) GetUserByLoginAndPassword(login, password string) (types.U
 	}
 
 	if !checkPasswordHash(password, user.Password) {
+		logrus.Info("incorrect password for user: ", login)
 		return types.User{}, fmt.Errorf("login or password was incorrect")
 	}
 	return user, nil
 }
 
-// Проверки пароля (в бд хранится не сам пароль, а его хеш)
+// Проверка пароля (в бд хранится не сам пароль, а его хеш в виде строки)
 func checkPasswordHash(password, passwordFromDB string) bool {
 	hash := sha256.Sum256([]byte(password))
 	hashString := hex.EncodeToString(hash[:])
@@ -67,6 +67,7 @@ func (s *AuthService) GenerateToken(user types.User) (string, error) {
 
 	tokenString, err := token.SignedString(secret)
 	if err != nil {
+		logrus.Error("error while signing token:", err)
 		return "", err
 	}
 

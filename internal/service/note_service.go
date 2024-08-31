@@ -19,10 +19,16 @@ func NewNoteService(store types.NoteStore) NoteService {
 func (n NoteService) AddNewNote(userId int, note types.NoteDto) (types.Note, error) {
 	var empty types.Note
 	if note.Text == "" {
+		logrus.Info("Empty text!")
 		return empty, fmt.Errorf("text should not be empty")
 	}
 
-	// TODO: some logic for spell checking
+	editedText, err := useSpellChecker(note.Text)
+	if err != nil {
+		logrus.Info("speller returned error: ", err)
+		return empty, fmt.Errorf("something went wrong")
+	}
+	note.Text = editedText
 
 	addedNote, err := n.store.AddNewNote(userId, note)
 	return addedNote, err
