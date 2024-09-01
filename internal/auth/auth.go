@@ -26,6 +26,7 @@ var (
 func (s *AuthService) GetUserByLoginAndPassword(login, password string) (types.User, error) {
 	logrus.Infof("Getting user by unique login: %s", login)
 
+	// Захардкодил двух пользователей :D Пароли захешированы в строку
 	users := map[string]types.User{
 		"artur": {
 			Id:       4,
